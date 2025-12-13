@@ -1,0 +1,99 @@
+[project]
+name = "foo"
+version = "0.0.0"
+readme = "README.md"
+authors = [
+    {name="Malakai Spann", email="MalakaiSpann@gmail.com"}
+]
+
+description = ""
+requires-python = ">=3.9"
+license = {file = "LICENSE"}
+classifiers = [
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Topic :: Software Development',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: POSIX',
+    'Operating System :: Unix',
+    'Operating System :: MacOS',
+]
+
+[project.urls]
+Repository = ""
+
+
+[dependency-groups]
+dev = [
+	{include-group = "format"},
+  	{include-group = "test"}
+]
+format = [
+    "black>=25.11.0",
+    "pylint>=3.3.9",
+    "pylint-per-file-ignores>=2.0.3",
+]
+release = [
+    "python-semantic-release>=10.5.2",
+]
+test = [
+    "pytest>=8.4.2",
+    "pytest-random-order>=1.2.0",
+]
+
+
+[build-system]
+requires = ["uv_build>=0.9.14,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+addopts = "-rpfs --quiet --show-capture=no --random-order-bucket=class --color=no"
+testpaths = [
+    "src/tests"
+]
+pythonpath = [
+    "src"
+]
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+commit_parser = "conventional"
+
+build_command = """
+    uv lock --upgrade-package "$PACKAGE_NAME"
+    git add uv.lock
+    uv build
+"""
+
+[tool.semantic_release.branches.main]
+match = "(develop)"
+pre-release = false
+
+[tool.semantic_release.publish]
+dist_glob_patterns = ["dist/*", "README.md", "docs/CHANGELOG.md"]
+upload_to_vcs_release = true
+
+[tool.semantic_release.changelog]
+exclude_commit_patterns = [
+    '''chore(?:\([^)]*?\))?: .+''',
+    '''ci(?:\([^)]*?\))?: .+''',
+    '''refactor(?:\([^)]*?\))?: .+''',
+    '''style(?:\([^)]*?\))?: .+''',
+    '''test(?:\([^)]*?\))?: .+''',
+    '''build\((?!deps\): .+)''',
+    '''Initial [Cc]ommit.*''',
+]
+
+[tool.semantic_release.changelog.default_templates]
+changelog_file = "docs/CHANGELOG.md"
+output_format = "md"
+
+[tool.uv.build-backend]
+module-name = "foo"
+module-root = "src"
+
+
