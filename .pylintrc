@@ -5,8 +5,6 @@ fail-under = 9
 
 [MESSAGES CONTROL]
 disable=
-    global-statement,
-    logging-fstring-interpolation,
     missing-module-docstring,
     too-few-public-methods,
     unnecessary-ellipsis,
