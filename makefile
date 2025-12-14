@@ -1,3 +1,4 @@
+.PHONY: benchmark
 .PHONY: clean
 .PHONY: docs-serve
 .PHONY: docs-build
@@ -6,6 +7,9 @@
 .PHONY: install
 .PHONY: lint-check
 .PHONY: test
+
+benchmark:
+	uv run src/benchmark/error_handling_delta.py
 
 clean:
 	rm -rf dist/ logs/ .venv/ site/
