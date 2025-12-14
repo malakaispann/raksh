@@ -10,6 +10,7 @@ from raksh.result.code import (
 )
 
 
+# pylint: disable-next-line=duplicate-code
 __all__ = [
     "auto",
     "FailureCode",
@@ -75,7 +76,8 @@ class Result(Generic[T]):
 
         Args:
             value: The value return with the result. Defaults to None.
-            code: The success code to associate with the result. Defaults to GenericSuccessCode.SUCCESS.
+            code: The success code to associate with the result.
+                  Defaults to GenericSuccessCode.SUCCESS.
         """
         return Result(code, value)
 
