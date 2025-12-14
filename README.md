@@ -1,171 +1,64 @@
-# Python Package Template
+# Raksh
 
-A modern Python package template with automated releases, testing, and publishing to PyPI. Built with [uv](https://github.com/astral-sh/uv) for fast, reliable Python package management and [python-semantic-release](https://python-semantic-release.readthedocs.io/) for automated versioning.
+A Python library providing opinionated types and logic for handling operation results. Instead of the traditional exception-throwing approach, Raksh enables contextual information sharing about results while promoting safe programming practices.
 
-## Features
+## Tech Stack
+- [Python](https://www.python.org/) - The one and only
+- [UV](https://docs.astral.sh/uv/) - Fast, reliable Python package management
 
-- Modern Python packaging with [uv](https://github.com/astral-sh/uv) and `pyproject.toml`
-- Automated semantic versioning and releases using [python-semantic-release](https://python-semantic-release.readthedocs.io/)
-- Testing setup with [pytest](https://docs.pytest.org/)
-- Code formatting with [black](https://black.readthedocs.io/) and linting with [pylint](https://pylint.readthedocs.io/)
-- GitHub Actions workflows for CI/CD
-- Automated changelog generation
-- PyPI publishing with [trusted publishing](https://docs.pypi.org/trusted-publishers/) support
+## Philosophy
 
-## Getting Started
+In software development, there are often multiple discussions surrounding exception handling.
 
-### Using This Template
+Python, in particular, advocates for a "do and ask for forgiveness" approach. This approach is further supported by its (relatively recent) implementation of [zero-cost exception handling](https://github.com/python/cpython/issues/84403#issuecomment-1093868126) in Python 3.11. Essentially, exceptions have no overhead unless they're caught. 
 
-1. Click "Use this template" on GitHub to create a new repository
-2. Clone your new repository
-3. Update the template files with your project information
+There's one glaring weakness to this approach, however – adherence to universal best practices. Software is only as good as the developers who spend time thinking about how it will be used, the appropriate boundaries, and edge cases to anticipate.
 
-### Initial Setup
+This module aims to encourage Pythonic and universal best practices by providing a context-specific delivery mechanism for operational results other than returning `None` which is one of the most vague, error-inducing patterns known in software (here's a [good primer discussion](https://softwareengineering.stackexchange.com/questions/373751/if-nulls-are-evil-what-should-be-used-when-a-value-can-be-meaningfully-absent) to get your toes wet on the subject). Through the use of these mechanisms, I hope that developers will:
+- Spend a bit more time thinking about all reasonable failure cases the software can handle
+- Distinguish between recoverable/expected and non-recoverable failures  
+- Handle the predictable failure cases amicably and return context-specific information for upstream decision making.
 
-Install uv if not already installed:
+Let's be clear, **exceptions have their place** and this module is no replacement for them. It won't ever be. Still, it's important to have mechanisms for the safe execution of logic.
+
+The result? More predictable code with better error handling and clearer intent.
+
+## Installation
+
 ```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
+pip install raksh
 ```
 
-Clone and setup your repository:
+Or with UV:
 ```bash
-git clone <your-repo-url>
-cd <your-repo-name>
-uv sync --all-groups
+uv add raksh
 ```
 
-### Configuration
+## Usage
 
-#### Update `pyproject.toml`
+### Basic Example
 
-Replace the following placeholders:
-- `name = "foo"` - Your package name
-- `authors` - Your name and email
-- `description` - Your package description
-- `Repository` - Your repository URL
+```python
+from raksh.result import auto, Result, FailureCode
 
-#### Update `.github/workflows/release.yaml`
+class RiskyOperationFailureCode(FailureCode):
+    DIVISION_BY_ZERO = auto()
 
-Replace `<foo>` in the PyPI URL with your package name:
-```yaml
-url: https://pypi.org/project/<foo>
+def my_risky_operation(a: float, b: float) -> Result[float]:
+    if b == 0:
+        return Result.failure(RiskyOperationFailureCode.DIVISION_BY_ZERO)
+    return Result.success(a / b)
+
+# Using the result
+result = my_risky_operation(10, 2)
+if result.is_success:
+    print(f"Result: {result.value}")  # Result: 5.0
+else:
+    print(str(result))
+    sys.exit(1)
 ```
 
-#### Configure GitHub Repository
 
-**PyPI Publishing Setup**
+## Final Note
 
-Choose one of the following methods:
-
-Option A: API Token
-1. Generate an API token on [PyPI](https://pypi.org/manage/account/token/)
-2. Add it as a repository secret named `PYPI_API_TOKEN`
-
-Option B: Trusted Publishing (Recommended)
-1. Go to your [PyPI account settings](https://pypi.org/manage/account/publishing/)
-2. Add a new trusted publisher:
-   - Repository owner: your GitHub username/organization
-   - Repository name: your repository name
-   - Workflow name: `release.yaml`
-   - Environment: `pypi`
-
-## Development Workflow
-
-### Making Changes
-
-Create a feature branch from `develop`:
-```bash
-git checkout -b feat/your-feature
-```
-
-Make your changes following the existing code style and conventions.
-
-Commit using [Conventional Commits](https://www.conventionalcommits.org/):
-```bash
-git add .
-git commit -m "feat: add new feature"
-```
-
-Commit types:
-- `feat:` New features (minor version bump)
-- `fix:` Bug fixes (patch version bump)
-- `docs:` Documentation changes
-- `style:` Code style changes
-- `refactor:` Code refactoring
-- `test:` Test changes
-- `chore:` Maintenance tasks
-- `perf:` Performance improvements
-- `ci:` CI configuration changes
-
-For breaking changes, add `BREAKING CHANGE:` in the commit body or use `!` after the type.
-
-### Testing
-
-Run tests locally:
-```bash
-make test
-```
-
-Format code:
-```bash
-make format
-```
-
-Check code formatting:
-```bash
-make format-check
-```
-
-Run linting:
-```bash
-make lint-check
-```
-
-### Release Process
-
-1. Merge feature branches to `develop`
-2. Navigate to Actions → "Release Module" workflow
-3. Click "Run workflow" and select the `develop` branch
-4. The workflow will:
-   - Analyze commits to determine version bump
-   - Update version in `pyproject.toml`
-   - Generate changelog
-   - Create GitHub release
-   - Build package distributions
-   - Publish to PyPI
-
-## Project Structure
-
-```
-.
-├── .github/
-│   ├── actions/
-│   │   └── setup/          # Reusable setup action
-│   └── workflows/
-│       └── release.yaml    # Release and publishing workflow
-├── docs/
-│   └── CHANGELOG.md       # Auto-generated changelog
-├── src/
-│   ├── <package_name>/    # Package source code
-│   └── tests/             # Test files
-├── pyproject.toml         # Project configuration
-├── uv.lock               # Dependency lock file
-└── README.md             # This file
-```
-
-## Troubleshooting
-
-**Version Not Updating**
-- Verify commits follow conventional commit format
-- Ensure workflow runs from `develop` branch
-- Check [python-semantic-release documentation](https://python-semantic-release.readthedocs.io/) for configuration options
-
-**Build Failures**
-- Run `uv sync` to ensure dependencies are installed
-- Check `uv.lock` is committed to repository
-- Verify Python version compatibility in `pyproject.toml`
-
-For additional help, consult:
-- [uv documentation](https://github.com/astral-sh/uv)
-- [python-semantic-release documentation](https://python-semantic-release.readthedocs.io/)
-- [PyPI packaging guide](https://packaging.python.org/)
+This library is designed to make error handling more explicit and safer in Python applications. If you find it useful or use it as inspiration for your own projects, please link back to this repo or [MalakaiSpann.com](https://malakaispann.com).
