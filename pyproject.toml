@@ -1,5 +1,5 @@
 [project]
-name = "foo"
+name = "raksh"
 version = "0.0.0"
 readme = "README.md"
 authors = [
@@ -22,6 +22,7 @@ classifiers = [
     'Operating System :: Unix',
     'Operating System :: MacOS',
 ]
+dependencies = []
 
 [project.urls]
 Repository = ""
@@ -51,7 +52,7 @@ requires = ["uv_build>=0.9.14,<0.10.0"]
 build-backend = "uv_build"
 
 [tool.pytest.ini_options]
-addopts = "-rpfs --quiet --show-capture=no --random-order-bucket=class --color=no"
+addopts = "-rpfs --quiet --random-order-bucket=class"
 testpaths = [
     "src/tests"
 ]
@@ -93,7 +94,7 @@ changelog_file = "docs/CHANGELOG.md"
 output_format = "md"
 
 [tool.uv.build-backend]
-module-name = "foo"
+module-name = "raksh"
 module-root = "src"
 
 
