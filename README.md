@@ -2,6 +2,9 @@
 
 A Python library providing opinionated types and logic for handling operation results. Instead of the traditional exception-throwing approach, Raksh enables contextual information sharing about results while promoting safe programming practices.
 
+**Archived** : Run `make benchmark`. The "results" approach is significantly slower in both success and failure cases.
+Guess this will just serve as an example project.
+
 ## Tech Stack
 - [Python](https://www.python.org/) - The one and only
 - [UV](https://docs.astral.sh/uv/) - Fast, reliable Python package management
@@ -23,16 +26,6 @@ Let's be clear, **exceptions have their place** and this module is no replacemen
 
 The result? More predictable code with better error handling and clearer intent.
 
-## Installation
-
-```bash
-pip install raksh
-```
-
-Or with UV:
-```bash
-uv add raksh
-```
 
 ## Usage
 
