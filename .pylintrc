@@ -10,7 +10,7 @@ disable=
     unnecessary-ellipsis,
 
 per-file-ignores=
-    src/tests/**: invalid-name, missing-class-docstring, missing-function-docstring, redefined-outer-name, unused-argument
+    src/tests/**: duplicate-code, invalid-name, missing-class-docstring, missing-function-docstring, redefined-outer-name, unused-argument
 
 
 [BASIC]
