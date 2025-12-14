@@ -2,7 +2,10 @@
 
 A Python library providing opinionated types and logic for handling operation results. Instead of the traditional exception-throwing approach, Raksh enables contextual information sharing about results while promoting safe programming practices.
 
-**Archived** : Run `make benchmark`. The "results" approach is significantly slower in both success and failure cases.
+## Archival and Removal From PyPi** 
+
+Run `make benchmark`. The "results" approach is significantly (3-17x) slower in both success and failure cases.
+
 Guess this will just serve as an example project.
 
 ## Tech Stack
@@ -17,7 +20,7 @@ Python, in particular, advocates for a "do and ask for forgiveness" approach. Th
 
 There's one glaring weakness to this approach, however – adherence to universal best practices. Software is only as good as the developers who spend time thinking about how it will be used, the appropriate boundaries, and edge cases to anticipate.
 
-This module aims to encourage Pythonic and universal best practices by providing a context-specific delivery mechanism for operational results other than returning `None` which is one of the most vague, error-inducing patterns known in software (here's a [good primer discussion](https://softwareengineering.stackexchange.com/questions/373751/if-nulls-are-evil-what-should-be-used-when-a-value-can-be-meaningfully-absent) to get your toes wet on the subject). Through the use of these mechanisms, I hope that developers will:
+This module aims to encourage Pythonic and universal best practices by providing a delivery mechanism for context-specific operational results other than returning `None` which is one of the most vague, error-inducing patterns known in software (here's a [good primer discussion](https://softwareengineering.stackexchange.com/questions/373751/if-nulls-are-evil-what-should-be-used-when-a-value-can-be-meaningfully-absent) to get your toes wet on the subject). Through the use of these mechanisms, I hope that developers will:
 - Spend a bit more time thinking about all reasonable failure cases the software can handle
 - Distinguish between recoverable/expected and non-recoverable failures  
 - Handle the predictable failure cases amicably and return context-specific information for upstream decision making.

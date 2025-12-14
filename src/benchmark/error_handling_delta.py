@@ -10,7 +10,7 @@ from raksh.result import FailureCode, Result, SuccessCode, auto
 
 __all__ = [
     "BenchmarkError",
-    "BenchmarkFailureCode", 
+    "BenchmarkFailureCode",
     "BenchmarkSuccessCode",
     "benchmark_function",
     "commander_exception",
@@ -64,14 +64,8 @@ def worker_result(should_fail: bool) -> Result[int]:
         Result containing success or failure state.
     """
     if should_fail:
-        return Result.failure(
-            code=BenchmarkFailureCode.OPERATION_FAILED,
-            value=None
-        )
-    return Result.success(
-        value=42,
-        code=BenchmarkSuccessCode.OPERATION_SUCCEEDED
-    )
+        return Result.failure(code=BenchmarkFailureCode.OPERATION_FAILED, value=None)
+    return Result.success(value=42, code=BenchmarkSuccessCode.OPERATION_SUCCEEDED)
 
 
 def commander_exception(should_fail: bool) -> int:
@@ -105,9 +99,7 @@ def commander_result(should_fail: bool) -> int:
 
 
 def benchmark_function(
-    func,
-    should_fail: bool,
-    iterations: int = 1_000_000
+    func, should_fail: bool, iterations: int = 1_000_000
 ) -> Tuple[float, float]:
     """Benchmarks a function multiple times and returns timing statistics.
 
@@ -144,15 +136,9 @@ def run_benchmarks():
     print("=" * 60)
 
     exception_time, exception_std = benchmark_function(
-        commander_exception,
-        True,
-        iterations
+        commander_exception, True, iterations
     )
-    result_time, result_std = benchmark_function(
-        commander_result,
-        True,
-        iterations
-    )
+    result_time, result_std = benchmark_function(commander_result, True, iterations)
 
     print(f"Exception approach: {exception_time:.2f} ms (±{exception_std:.2f} ms)")
     print(f"Result approach:    {result_time:.2f} ms (±{result_std:.2f} ms)")
@@ -167,14 +153,10 @@ def run_benchmarks():
     print("=" * 60)
 
     exception_time_success, exception_std_success = benchmark_function(
-        commander_exception,
-        False,
-        iterations
+        commander_exception, False, iterations
     )
     result_time_success, result_std_success = benchmark_function(
-        commander_result,
-        False,
-        iterations
+        commander_result, False, iterations
     )
 
     print(
