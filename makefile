@@ -1,4 +1,6 @@
 .PHONY: clean
+.PHONY: docs-serve
+.PHONY: docs-build
 .PHONY: format
 .PHONY: format-check
 .PHONY: install
@@ -6,7 +8,13 @@
 .PHONY: test
 
 clean:
-	rm -rf dist/ logs/ .venv/
+	rm -rf dist/ logs/ .venv/ site/
+
+docs-serve:
+	uv run mkdocs serve
+
+docs-build:
+	uv run mkdocs build
 
 format:
 	uv run black src

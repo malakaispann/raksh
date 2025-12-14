@@ -1,0 +1,25 @@
+site_name: Raksh
+site_description: A Python library for handling operation results
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - API Reference: api.md
+  - Contributing: contributing.md
+
+plugins:
+  - search
+  - mike
+  - mkdocs-simple-hooks:
+      hooks:
+        on_pre_build: "docs.hooks:copy_files"
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            heading_level: 3
+            show_root_heading: true
+            show_root_toc_entry: false

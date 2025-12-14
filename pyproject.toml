@@ -31,7 +31,15 @@ Repository = ""
 [dependency-groups]
 dev = [
 	{include-group = "format"},
-  	{include-group = "test"}
+  	{include-group = "test"},
+	{include-group = "docs"}
+]
+docs = [
+    "mkdocs>=1.6.0",
+    "mkdocs-material>=9.0.0",
+    "mike>=2.1.0",
+    "mkdocs-simple-hooks>=0.1.5",
+    "mkdocstrings[python]>=0.20.0",
 ]
 format = [
     "black>=25.11.0",
